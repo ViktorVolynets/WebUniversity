@@ -9,7 +9,7 @@ namespace WebUniversity.Controllers
     public class TeachersController : Controller
     {
         private readonly MyDbContext _db;
-
+       
         public TeachersController(MyDbContext db)
         {
             _db = db;
@@ -48,6 +48,17 @@ namespace WebUniversity.Controllers
             _db.SaveChanges();
             return View(teacher);
         }
+        [HttpGet]
+        public IActionResult Delete (int id)
+        {
+            var teacher = _db.Teachers.Find(id);
+            return View();
+        }
+
+      
+
+
+
 
     }
 }

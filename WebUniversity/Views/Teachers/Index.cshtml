@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Teacher Page";
+}
+@model IEnumerable<Teacher>
+
+
+<div class="text-center">
+    <h1 class="display-4">Teachers</h1>
+    <div>
+        <a href="/Teachers/Create">Create</a>
+    </div>
+    @foreach (var teacher in Model)
+    {
+        <div style="font-size:larger">@teacher.Name <span><a href="/Teachers/Edit/@teacher.Id">Edit</a></span>
+    
+    </div>
+    }
+
+</div>

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\StudentDiscipline.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Teachers\Create.cshtml" />
     <None Include="Views\Teachers\Delete.cshtml" />
     <None Include="Views\Teachers\Edit.cshtml" />

@@ -6,6 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebUniversity.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WebUniversity;
 
 namespace WebUniversity.Controllers
 {
@@ -21,12 +24,40 @@ namespace WebUniversity.Controllers
             _db = db;
         }
 
+    
         public IActionResult Index()
         {
-           // int n = _db.Students.Count();
-           // return Content(n.ToString());
-               return View();
+            var myDbContext = _db.Students.Include(d => d.Disciplines);
+            // int n = _db.Students.Count();
+            // return Content(n.ToString());
+            return View(myDbContext.ToList());
         }
+
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+         
+          //  var student = _db.Students.Include(d => d.Disciplines);
+            var student = await  _db.Students.FindAsync(id);
+            _db.Entry(student).Collection("Disciplines").Load();
+            //   Student t = (Student)student.Where(x => x.Id == id).Select(s => s);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            //  ViewData["Disciplin"] = new SelectList(_db.Disciplines, "Id", "Title", student.Disciplines.First().Id);
+            ViewBag.Distiplines = _db.Disciplines;
+            return View(student);
+        }
+
+      
+
+
+
 
         public IActionResult Privacy()
         {

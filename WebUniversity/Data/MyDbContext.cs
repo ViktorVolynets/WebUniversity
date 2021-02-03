@@ -6,30 +6,41 @@ using System.Threading.Tasks;
 using WebUniversity.Models;
 
 
+
 namespace WebUniversity
 {
     public class MyDbContext : DbContext
     {
    
         public MyDbContext(DbContextOptions<MyDbContext> options)
-: base(options) { }
+: base(options) {
+
+         
+        }
 
      
-        public DbSet<Student> Students { get; set; }
-        public DbSet<StudentDiscipline> StudentDisciplines { get; set; }
+        public DbSet<Student> Students { get; set; } 
 
         public DbSet<Discipline> Disciplines { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
-     
+
 
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StudentDiscipline>()
-    .HasKey(key => new { key.StudentId, key.DisciplineId });
+
+            modelBuilder.Entity<Discipline>().HasMany(c => c.Students)
+           .WithMany(s => s.Disciplines);
+        
+
+
+
+
+            //     modelBuilder.Entity<StudentDiscipline>()
+            //    .HasKey(key => new { key.StudentId, key.DisciplineId });
 
             base.OnModelCreating(modelBuilder);
         }

@@ -10,6 +10,14 @@ namespace WebUniversity
         public int Id { set; get; }
         public string Name { set; get; }
         //
-        public List<StudentDiscipline> Disciplines { set; get; }
+        public virtual ICollection<Discipline> Disciplines { set; get; }
+
+        public Student()
+        {
+            Disciplines = new List<Discipline>();
+        }
+
     }
+
+   
 }

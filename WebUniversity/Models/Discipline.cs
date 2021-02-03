@@ -13,7 +13,14 @@ namespace WebUniversity
         //
     
 
-        public List<StudentDiscipline> StudentDiscipline { set; get; }
+        public virtual ICollection<Student> Students { set; get; }
         public Teacher Teacher { set; get; }
+
+
+        public Discipline()
+        {
+            Students = new List<Student>();
+        }
+
     }
 }

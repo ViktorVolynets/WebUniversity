@@ -54,24 +54,24 @@ namespace WebUniversity.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StudentDisciplines",
+                name: "DisciplineStudent",
                 columns: table => new
                 {
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    DisciplineId = table.Column<int>(type: "int", nullable: false)
+                    DisciplinesId = table.Column<int>(type: "int", nullable: false),
+                    StudentsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentDisciplines", x => new { x.StudentId, x.DisciplineId });
+                    table.PrimaryKey("PK_DisciplineStudent", x => new { x.DisciplinesId, x.StudentsId });
                     table.ForeignKey(
-                        name: "FK_StudentDisciplines_Disciplines_DisciplineId",
-                        column: x => x.DisciplineId,
+                        name: "FK_DisciplineStudent_Disciplines_DisciplinesId",
+                        column: x => x.DisciplinesId,
                         principalTable: "Disciplines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StudentDisciplines_Students_StudentId",
-                        column: x => x.StudentId,
+                        name: "FK_DisciplineStudent_Students_StudentsId",
+                        column: x => x.StudentsId,
                         principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -83,15 +83,15 @@ namespace WebUniversity.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentDisciplines_DisciplineId",
-                table: "StudentDisciplines",
-                column: "DisciplineId");
+                name: "IX_DisciplineStudent_StudentsId",
+                table: "DisciplineStudent",
+                column: "StudentsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "StudentDisciplines");
+                name: "DisciplineStudent");
 
             migrationBuilder.DropTable(
                 name: "Disciplines");

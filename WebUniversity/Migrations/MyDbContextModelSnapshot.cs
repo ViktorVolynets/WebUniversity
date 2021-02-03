@@ -18,6 +18,21 @@ namespace WebUniversity.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
+            modelBuilder.Entity("DisciplineStudent", b =>
+                {
+                    b.Property<int>("DisciplinesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DisciplinesId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("DisciplineStudent");
+                });
+
             modelBuilder.Entity("WebUniversity.Discipline", b =>
                 {
                     b.Property<int>("Id")
@@ -56,21 +71,6 @@ namespace WebUniversity.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("WebUniversity.StudentDiscipline", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DisciplineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "DisciplineId");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.ToTable("StudentDisciplines");
-                });
-
             modelBuilder.Entity("WebUniversity.Teacher", b =>
                 {
                     b.Property<int>("Id")
@@ -86,6 +86,21 @@ namespace WebUniversity.Migrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("DisciplineStudent", b =>
+                {
+                    b.HasOne("WebUniversity.Discipline", null)
+                        .WithMany()
+                        .HasForeignKey("DisciplinesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebUniversity.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WebUniversity.Discipline", b =>
                 {
                     b.HasOne("WebUniversity.Teacher", "Teacher")
@@ -95,35 +110,6 @@ namespace WebUniversity.Migrations
                         .IsRequired();
 
                     b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("WebUniversity.StudentDiscipline", b =>
-                {
-                    b.HasOne("WebUniversity.Discipline", "Discipline")
-                        .WithMany("StudentDiscipline")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebUniversity.Student", "Student")
-                        .WithMany("Disciplines")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Discipline");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("WebUniversity.Discipline", b =>
-                {
-                    b.Navigation("StudentDiscipline");
-                });
-
-            modelBuilder.Entity("WebUniversity.Student", b =>
-                {
-                    b.Navigation("Disciplines");
                 });
 
             modelBuilder.Entity("WebUniversity.Teacher", b =>

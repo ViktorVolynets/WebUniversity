@@ -9,6 +9,6 @@ namespace WebUniversity
         public int Id { set; get; }
         public string Name { set; get; }
         //
-        public List<TeacherDiscipline> TeacherDiscipline { set; get; }
+        public List<Discipline> Disciplines { set; get; }
     }
 }

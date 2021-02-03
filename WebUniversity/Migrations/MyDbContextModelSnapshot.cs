@@ -28,10 +28,15 @@ namespace WebUniversity.Migrations
                     b.Property<string>("Annotation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Disciplines");
                 });
@@ -81,19 +86,15 @@ namespace WebUniversity.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("WebUniversity.TeacherDiscipline", b =>
+            modelBuilder.Entity("WebUniversity.Discipline", b =>
                 {
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
+                    b.HasOne("WebUniversity.Teacher", "Teacher")
+                        .WithMany("Disciplines")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("DisciplineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TeacherId", "DisciplineId");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.ToTable("TeacherDisciplines");
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("WebUniversity.StudentDiscipline", b =>
@@ -115,30 +116,9 @@ namespace WebUniversity.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("WebUniversity.TeacherDiscipline", b =>
-                {
-                    b.HasOne("WebUniversity.Discipline", "Discipline")
-                        .WithMany("TeacherDiscipline")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebUniversity.Teacher", "Teacher")
-                        .WithMany("TeacherDiscipline")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Discipline");
-
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("WebUniversity.Discipline", b =>
                 {
                     b.Navigation("StudentDiscipline");
-
-                    b.Navigation("TeacherDiscipline");
                 });
 
             modelBuilder.Entity("WebUniversity.Student", b =>
@@ -148,7 +128,7 @@ namespace WebUniversity.Migrations
 
             modelBuilder.Entity("WebUniversity.Teacher", b =>
                 {
-                    b.Navigation("TeacherDiscipline");
+                    b.Navigation("Disciplines");
                 });
 #pragma warning restore 612, 618
         }

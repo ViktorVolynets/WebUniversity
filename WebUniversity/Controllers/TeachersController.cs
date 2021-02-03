@@ -51,11 +51,17 @@ namespace WebUniversity.Controllers
         [HttpGet]
         public IActionResult Delete (int id)
         {
-            var teacher = _db.Teachers.Find(id);
+            var teacher = _db.Teachers.Find(id); 
+            return View(teacher);
+        }
+        [HttpPost]
+        public IActionResult Delete (Teacher t)
+        {  
+            _db.Teachers.Remove(t); 
+            _db.SaveChanges();
             return View();
         }
 
-      
 
 
 

@@ -11,7 +11,7 @@
     </div>
     @foreach (var teacher in Model)
     {
-        <div style="font-size:larger">@teacher.Name <span><a href="/Teachers/Edit/@teacher.Id">Edit</a></span>
+        <div style="font-size:larger">@teacher.Name <span><a href="/Teachers/Edit/@teacher.Id">Edit</a></span><span style="margin-left: 10px"><a href="/Teachers/Delete/@teacher.Id">Delete</a></span>
     
     </div>
     }

@@ -9,9 +9,11 @@ namespace WebUniversity
         public int Id { set; get; }
         public string Title { set; get; }
         public string Annotation { set; get; }
+        public int TeacherId { set; get; }
         //
-        public List<TeacherDiscipline> TeacherDiscipline { set; get; }
+    
 
         public List<StudentDiscipline> StudentDiscipline { set; get; }
+        public Teacher Teacher { set; get; }
     }
 }

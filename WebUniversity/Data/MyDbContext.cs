@@ -21,16 +21,13 @@ namespace WebUniversity
         public DbSet<Discipline> Disciplines { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<TeacherDiscipline> TeacherDisciplines { get; set; }
+     
 
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<TeacherDiscipline>()
-                .HasKey(key => new { key.TeacherId, key.DisciplineId });
             modelBuilder.Entity<StudentDiscipline>()
     .HasKey(key => new { key.StudentId, key.DisciplineId });
 

@@ -35,13 +35,7 @@ namespace WebUniversity
             modelBuilder.Entity<Discipline>().HasMany(c => c.Students)
            .WithMany(s => s.Disciplines);
         
-
-
-
-
-            //     modelBuilder.Entity<StudentDiscipline>()
-            //    .HasKey(key => new { key.StudentId, key.DisciplineId });
-
+          
             base.OnModelCreating(modelBuilder);
         }
 

@@ -27,12 +27,25 @@ namespace WebUniversity.Controllers
     
         public IActionResult Index()
         {
-            var myDbContext = _db.Students.Include(d => d.Disciplines);
-            // int n = _db.Students.Count();
-            // return Content(n.ToString());
+            var myDbContext = _db.Students.Include(d => d.Disciplines);         
             return View(myDbContext.ToList());
         }
 
+
+        public IActionResult Create()
+        {  
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Name")] Student student)
+        {
+                _db.Add(student);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+  
+        }
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -40,21 +53,50 @@ namespace WebUniversity.Controllers
             {
                 return NotFound();
             }
-         
-          //  var student = _db.Students.Include(d => d.Disciplines);
+
             var student = await  _db.Students.FindAsync(id);
             _db.Entry(student).Collection("Disciplines").Load();
-            //   Student t = (Student)student.Where(x => x.Id == id).Select(s => s);
+         
             if (student == null)
             {
                 return NotFound();
             }
-            //  ViewData["Disciplin"] = new SelectList(_db.Disciplines, "Id", "Title", student.Disciplines.First().Id);
             ViewBag.Distiplines = _db.Disciplines;
             return View(student);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Student student, int[] discipline)
+        {
+                try
+                {
+
+                var studentDb = _db.Students.Include(d=>d.Disciplines).Where(s=>s.Id==student.Id).FirstOrDefault();
+                studentDb.Name = student.Name;
+         
+               foreach(var item in _db.Disciplines)
+                {
+                    if (discipline.ToList().Contains(item.Id)) {
+                        studentDb.Disciplines.Add(item);
+                    }
+                    else
+                    {
+                        studentDb.Disciplines.Remove(item);
+                    }
+                }
+
+                _db.Entry(studentDb).State = EntityState.Modified;
+           
+                await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                   
+                }
+                return RedirectToAction(nameof(Index));
       
+        }
 
 
 

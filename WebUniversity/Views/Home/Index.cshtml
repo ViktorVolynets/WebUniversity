@@ -1,7 +1,11 @@
-﻿@model IEnumerable<WebUniversity.Student>
+﻿@using WebUniversity.Helpers
+@model IEnumerable<WebUniversity.Student>
 @{
     ViewData["Title"] = "Home Page";
 }
+
+<!-- My Select html helper   -->
+@Html.Select(Model.ToList(), "Id", "Name", (Student)Model.First())
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -30,8 +34,8 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>  
-         
+                </td>
+
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit Disciplines</a>
                 </td>

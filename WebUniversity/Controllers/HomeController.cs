@@ -41,14 +41,19 @@ namespace WebUniversity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name")] Student student)
         {
+            if (ModelState.IsValid)
+            {
                 _db.Add(student);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-  
+            }
+            return View(student);
+
         }
 
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -67,35 +72,48 @@ namespace WebUniversity.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Student student, int[] discipline)
+        public async Task<IActionResult> Edit(Student student, int[] Disciplines)
         {
+            if (ModelState.IsValid)
+            {
                 try
                 {
 
-                var studentDb = _db.Students.Include(d=>d.Disciplines).Where(s=>s.Id==student.Id).FirstOrDefault();
-                studentDb.Name = student.Name;
-         
-               foreach(var item in _db.Disciplines)
-                {
-                    if (discipline.ToList().Contains(item.Id)) {
-                        studentDb.Disciplines.Add(item);
-                    }
-                    else
+                    if (Disciplines.Count()>3)
                     {
-                        studentDb.Disciplines.Remove(item);
-                    }
-                }
 
-                _db.Entry(studentDb).State = EntityState.Modified;
-           
-                await _db.SaveChangesAsync();
+                        ModelState.AddModelError("Disciplines", "You can choose no more than 3 disciplines");
+                        ViewBag.Distiplines = _db.Disciplines;
+                        return View(student);
+                    }
+
+                    var studentDb = _db.Students.Include(d => d.Disciplines).Where(s => s.Id == student.Id).FirstOrDefault();
+                    studentDb.Name = student.Name;
+
+                    foreach (var item in _db.Disciplines)
+                    {
+                        if (Disciplines.ToList().Contains(item.Id))
+                        {
+                            studentDb.Disciplines.Add(item);
+                        }
+                        else
+                        {
+                            studentDb.Disciplines.Remove(item);
+                        }
+                    }
+
+                    _db.Entry(studentDb).State = EntityState.Modified;
+
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                   
+
                 }
                 return RedirectToAction(nameof(Index));
-      
+            }
+            ViewBag.Distiplines = _db.Disciplines;
+            return View(student);
         }
 
 
@@ -111,5 +129,7 @@ namespace WebUniversity.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+     
     }
 }

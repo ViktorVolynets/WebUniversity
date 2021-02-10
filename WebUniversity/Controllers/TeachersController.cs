@@ -25,11 +25,16 @@ namespace WebUniversity.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(string name)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Teacher teacher)
         {
-            var teacher = new Teacher { Name = name };
-            _db.Teachers.Add(teacher);
-            _db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+               
+                _db.Teachers.Add(teacher);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
         [HttpGet]
@@ -42,11 +47,15 @@ namespace WebUniversity.Controllers
         [HttpPost]
         public IActionResult Edit(Teacher t)
         {
-            var teacher = _db.Teachers.Find(t.Id);
-            teacher.Name = t.Name;
-        
-            _db.SaveChanges();
-            return View(teacher);
+            if (ModelState.IsValid)
+            {
+                var teacher = _db.Teachers.Find(t.Id);
+                teacher.Name = t.Name;
+
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(t);
         }
         [HttpGet]
         public IActionResult Delete (int id)
@@ -55,11 +64,14 @@ namespace WebUniversity.Controllers
             return View(teacher);
         }
         [HttpPost]
-        public IActionResult Delete (Teacher t)
-        {  
-            _db.Teachers.Remove(t); 
-            _db.SaveChanges();
-            return View();
+        public IActionResult Delete ([FromForm] Teacher t)
+        {
+           
+                _db.Teachers.Remove(t);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+          
+
         }
 
 

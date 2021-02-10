@@ -28,20 +28,24 @@ namespace WebUniversity.Controllers
         // GET: Disciplines/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var discipline = await _context.Disciplines
-                .Include(d => d.Teacher)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (discipline == null)
-            {
-                return NotFound();
-            }
-
+                var discipline = await _context.Disciplines
+                    .Include(d => d.Teacher)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (discipline == null)
+                {
+                    return NotFound();
+                }
+          
             return View(discipline);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Disciplines/Create
@@ -71,18 +75,22 @@ namespace WebUniversity.Controllers
         // GET: Disciplines/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var discipline = await _context.Disciplines.FindAsync(id);
-            if (discipline == null)
-            {
-                return NotFound();
+                var discipline = await _context.Disciplines.FindAsync(id);
+                if (discipline == null)
+                {
+                    return NotFound();
+                }
+                ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", discipline.TeacherId);
+                return View(discipline);
             }
-            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", discipline.TeacherId);
-            return View(discipline);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Disciplines/Edit/5
@@ -145,9 +153,14 @@ namespace WebUniversity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var discipline = await _context.Disciplines.FindAsync(id);
-            _context.Disciplines.Remove(discipline);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {
+
+                var discipline = await _context.Disciplines.FindAsync(id);
+                _context.Disciplines.Remove(discipline);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-WebUniversityAuthentication-94074F1D-14AB-4A8C-BFDA-0B57CB8D6A52</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+  </ItemGroup>
+
+</Project>

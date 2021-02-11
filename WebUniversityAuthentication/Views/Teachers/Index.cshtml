@@ -1,0 +1,21 @@
+﻿@using WebUniversityAuthentication.Helpers
+@{
+    ViewData["Title"] = "Teacher Page";
+}
+@model IEnumerable<Teacher>
+<!-- My Select html helper   -->
+
+<div class="text-center">
+    <h1 class="display-4">Teachers</h1>
+    <div>
+        <a href="/Teachers/Create">Create</a>
+    </div>
+    @foreach (var teacher in Model)
+    {
+        <div style="font-size:larger">
+            @teacher.Name <span><a href="/Teachers/Edit/@teacher.Id">Edit</a></span><span style="margin-left: 10px"><a href="/Teachers/Delete/@teacher.Id">Delete</a></span>
+
+        </div>
+    }
+
+</div>

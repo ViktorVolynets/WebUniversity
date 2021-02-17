@@ -28,7 +28,8 @@ namespace WebUniversityAuthentication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+                options.UseLazyLoadingProxies(true).
+                UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -41,12 +42,23 @@ namespace WebUniversityAuthentication
                 options.Password.RequiredLength = 6;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            //services.Configure<ApplicationDbContext>(o =>
-            //      o.Database.Migrate()
-            //                );
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ForAdmin",
+                    policyBuilder => policyBuilder.RequireClaim("Who", "Admin"));
+                    options.AddPolicy("ForStudent",
+                    policyBuilder => policyBuilder.RequireClaim("Who", "Student")
+                    ) ;
+            });
+
+           
             services.AddControllersWithViews();
            
             services.AddRazorPages();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -17,7 +18,8 @@ using WebUniversityAuthentication;
 
 namespace WebUniversityAuthentication.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+   //  [AllowAnonymous]
+    [Authorize(Policy = "ForAdmin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<Student> _signInManager;
@@ -60,6 +62,10 @@ namespace WebUniversityAuthentication.Areas.Identity.Pages.Account
             [StringLength(100, MinimumLength = 3)]
             [NameValidation("Mac", "Test")]
             public string Group { get; set; }
+            [Required]
+            public bool IsAdmin { get; set; }
+            [Required]
+            public bool IsStudent { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -90,7 +96,15 @@ namespace WebUniversityAuthentication.Areas.Identity.Pages.Account
                 {
                     var result = await _userManager.CreateAsync(user, Input.Password);
 
-               
+                    await _userManager.AddClaimAsync(user, new Claim("Group", user.Group));
+                    if(Input.IsAdmin)
+                    await _userManager.AddClaimAsync(user, new Claim("Who", "Admin"));
+
+                    if (Input.IsStudent)
+                    await  _userManager.AddClaimAsync(user, new Claim("Who", "Student"));
+
+
+
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created a new account with password.");
@@ -112,7 +126,7 @@ namespace WebUniversityAuthentication.Areas.Identity.Pages.Account
                         }
                         else
                         {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
+                          //  await _signInManager.SignInAsync(user, isPersistent: false);
                             return LocalRedirect(returnUrl);
                         }
                     }

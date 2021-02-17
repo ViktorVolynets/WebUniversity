@@ -23,15 +23,20 @@ namespace WebUniversityAuthentication.Controllers
             _db = db;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
           
             return View();
         }
-        [AllowAnonymous]
+     
         public IActionResult Privacy()
         {
-            return View();
+
+            string group = User.Claims
+       .FirstOrDefault(c => c.Type == "Group")?.Value ?? "no group";
+            return Content(group);
+        
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -15,7 +15,7 @@ namespace WebUniversityAuthentication
         [NameValidation("Mac", "Test")]
         public string Name { set; get; }
         //
-        public List<Discipline> Disciplines { set; get; }
+        public virtual List<Discipline> Disciplines { set; get; }
 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

@@ -21,7 +21,7 @@ namespace WebUniversityAuthentication
     
 
         public virtual ICollection<Student> Students { set; get; }
-        public Teacher Teacher { set; get; }
+        public virtual Teacher Teacher { set; get; }
 
 
         public Discipline()
